@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create a Creator Community</h2>
+<form method="post" class="form">
+    <label>Community name
+        <input type="text" name="name" required>
+    </label>
+    <label>Book title (optional)
+        <input type="text" name="book_title">
+    </label>
+    <label>Description
+        <textarea name="description" rows="4"></textarea>
+    </label>
+    <button type="submit" class="button">Create</button>
+</form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+    <h2>Find a place to share your stories</h2>
+    <p>Join creator-led book communities, drop into hot topics, or follow your favorite authors.</p>
+</section>
+
+<section class="grid">
+    <div class="panel">
+        <h3>General Forum</h3>
+        <p>Jump into the public conversation across the hottest topics.</p>
+        <ul class="list">
+            {% for topic in topics %}
+                <li>
+                    <a href="{{ url_for('general_topic', topic_id=topic.id) }}">{{ topic.name }}</a>
+                    <span class="muted">{{ topic.description }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="panel">
+        <h3>Creator Communities</h3>
+        <p>Book-specific spaces managed by creators.</p>
+        {% if user and user.role == 'creator' %}
+            <a class="button" href="{{ url_for('create_community') }}">Start a community</a>
+        {% endif %}
+        <ul class="list">
+            {% for community in communities %}
+                <li>
+                    <a href="{{ url_for('community_detail', community_id=community.id) }}">{{ community.name }}</a>
+                    <span class="muted">{{ community.book_title or 'Unspecified book' }}</span>
+                </li>
+            {% else %}
+                <li class="muted">No communities yet. Be the first to create one.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="panel">
+        <h3>Creators</h3>
+        <p>Follow creators to get their profile posts in your social feed.</p>
+        <ul class="list">
+            {% for creator in creators %}
+                <li><a href="{{ url_for('profile', user_id=creator.id) }}">{{ creator.username }}</a></li>
+            {% else %}
+                <li class="muted">No creators registered yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}

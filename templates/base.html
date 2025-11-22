@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Metallism Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="branding">
+            <h1><a href="{{ url_for('index') }}">Metallism Forum</a></h1>
+            <p class="tagline">Communities for books, creators, and readers</p>
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            {% if user %}
+                <a href="{{ url_for('create_post') }}">New Post</a>
+                {% if user.role == 'creator' %}
+                    <a href="{{ url_for('create_community') }}">Create Community</a>
+                    <a href="{{ url_for('profile', user_id=user.id) }}">My Profile</a>
+                {% endif %}
+                {% if user.is_moderator %}
+                    <a href="{{ url_for('create_journalist_invite') }}">Journalist Invites</a>
+                {% endif %}
+                <a href="{{ url_for('social_feed') }}">Social Feed</a>
+                <a href="{{ url_for('logout') }}">Logout ({{ user.username }})</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="content">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Built for reader and creator collaboration.</p>
+    </footer>
+</body>
+</html>

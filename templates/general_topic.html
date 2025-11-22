@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>{{ topic.name }}</h2>
+        <p class="muted">{{ topic.description }}</p>
+    </div>
+</div>
+
+<section class="panel">
+    <h3>Posts</h3>
+    {% if user %}
+        <a class="button" href="{{ url_for('create_post') }}">Add post</a>
+    {% endif %}
+    <ul class="posts">
+        {% for post in posts %}
+            <li>
+                <div class="post-heading">
+                    <strong>{{ post.title }}</strong>
+                    <span class="muted">by {{ post.author.username }} • {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <p>{{ post.content }}</p>
+                {% if post.media_type == 'image' and post.media_url %}
+                    <img src="{{ post.media_url }}" alt="{{ post.title }} image" class="media-preview">
+                {% elif post.media_type == 'video' and post.media_url %}
+                    <video controls class="media-preview">
+                        <source src="{{ post.media_url }}">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+                {% if user and user.is_moderator %}
+                    <form method="post" action="{{ url_for('delete_post', post_id=post.id) }}">
+                        <button class="link-button" type="submit">Delete</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% else %}
+            <li class="muted">No posts yet.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

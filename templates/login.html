@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Login</h2>
+<form method="post" class="form">
+    <label>Username
+        <input type="text" name="username" required>
+    </label>
+    <label>Password
+        <input type="password" name="password" required>
+    </label>
+    <label>Authenticator code
+        <input type="text" name="otp_code" inputmode="numeric" pattern="[0-9]*" required>
+    </label>
+    <button type="submit" class="button">Login</button>
+</form>
+<p>Need an account? <a href="{{ url_for('register') }}">Register first</a>.</p>
+{% endblock %}

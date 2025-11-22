@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Journalist Invite</h2>
+<form method="post" class="form">
+    <label>Contact email for record keeping (optional)
+        <input type="email" name="contact_email" placeholder="journalist@example.com">
+    </label>
+    <button type="submit" class="button">Generate one-time link</button>
+</form>
+{% if token %}
+<div class="card">
+    <p><strong>Invite link:</strong></p>
+    <p><code>{{ url_for('register', journalist_token=token, _external=True) }}</code></p>
+    <p class="hint">Share this link once. Registering with it will consume the invite.</p>
+</div>
+{% endif %}
+{% endblock %}

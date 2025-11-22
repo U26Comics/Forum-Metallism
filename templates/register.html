@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Register</h2>
+<form method="post" class="form">
+    <label>Username
+        <input type="text" name="username" required>
+    </label>
+    <label>Password
+        <input type="password" name="password" required>
+    </label>
+    <label>Email (required for creators)
+        <input type="email" name="email">
+    </label>
+    <label>Role
+        <select name="role" required>
+            <option value="reader">Reader</option>
+            <option value="creator">Creator</option>
+            {% if journalist_invite %}
+            <option value="journalist" selected>Journalist</option>
+            {% endif %}
+        </select>
+    </label>
+    <label>Creator invite code (required for creators)
+        <input type="text" name="creator_key" placeholder="e.g., ABCD-1234" />
+    </label>
+    {% if journalist_invite %}
+    <p class="hint">Registering as a journalist using admin invite link.</p>
+    <input type="hidden" name="journalist_token" value="{{ journalist_token }}" />
+    {% endif %}
+    <label class="checkbox">
+        <input type="checkbox" name="is_moderator">
+        Moderator privileges (for testing moderation controls)
+    </label>
+    <button type="submit" class="button">Create account</button>
+</form>
+<p class="hint">Creator usernames must match their email domain (e.g., mybooks.com).</p>
+<p class="hint">After registering, you will receive a secret to add to your authenticator app for 2FA.</p>
+<p>Already registered? <a href="{{ url_for('login') }}">Login here</a>.</p>
+{% endblock %}
