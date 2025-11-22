@@ -543,4 +543,6 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         seed_general_topics()
-    app.run(debug=True)
+    # Enable debug mode only if the FLASK_DEBUG environment variable is set to "1" or "true"
+    debug_mode = os.environ.get("FLASK_DEBUG", "0").lower() in ("1", "true")
+    app.run(debug=debug_mode)
