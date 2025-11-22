@@ -5,6 +5,7 @@ import secrets
 
 import pyotp
 from flask import Flask, redirect, render_template, request, session, url_for, flash
+from urllib.parse import urlparse
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 
@@ -536,7 +537,12 @@ def delete_post(post_id):
     db.session.commit()
     flash("Post deleted.")
     destination = request.referrer or url_for("index")
-    return redirect(destination)
+    # Sanitize destination - only allow relative URLs
+    dest_url = destination.replace("\\", "")
+    parsed = urlparse(dest_url)
+    if not parsed.netloc and not parsed.scheme:
+        return redirect(dest_url)
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
