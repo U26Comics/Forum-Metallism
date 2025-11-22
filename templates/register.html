@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Register</h2>
+<form method="post" class="form">
+    <label>Username
+        <input type="text" name="username" required>
+    </label>
+    <label>Role
+        <select name="role" required>
+            <option value="reader">Reader</option>
+            <option value="creator">Creator</option>
+        </select>
+    </label>
+    <label class="checkbox">
+        <input type="checkbox" name="is_moderator">
+        Moderator privileges (for testing moderation controls)
+    </label>
+    <button type="submit" class="button">Create account</button>
+</form>
+<p>Already registered? <a href="{{ url_for('login') }}">Login here</a>.</p>
+{% endblock %}
