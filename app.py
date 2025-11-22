@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from flask import Flask, redirect, render_template, request, session, url_for, flash
+from urllib.parse import urlparse
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -375,7 +376,13 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     flash("Post deleted.")
-    destination = request.referrer or url_for("index")
+    referrer = request.referrer or ""
+    referrer = referrer.replace("\\", "")
+    parsed_referrer = urlparse(referrer)
+    if not parsed_referrer.netloc and not parsed_referrer.scheme:
+        destination = referrer
+    else:
+        destination = url_for("index")
     return redirect(destination)
 
 
