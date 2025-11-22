@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create a Post</h2>
+<form method="post" class="form">
+    <label>Title
+        <input type="text" name="title" required>
+    </label>
+    <label>Content
+        <textarea name="content" rows="5" required></textarea>
+    </label>
+    <fieldset>
+        <legend>Where should this post live?</legend>
+        <label class="radio">
+            <input type="radio" name="destination" value="community" onclick="toggleDestination('community')">
+            Creator community
+        </label>
+        <label class="radio">
+            <input type="radio" name="destination" value="topic" onclick="toggleDestination('topic')">
+            General forum topic
+        </label>
+        {% if user.role == 'creator' %}
+        <label class="radio">
+            <input type="radio" name="destination" value="profile" onclick="toggleDestination('profile')">
+            My profile page
+        </label>
+        {% endif %}
+    </fieldset>
+    <div id="community-select" class="hidden">
+        <label>Select community
+            <select name="community_id">
+                <option value="">-- choose --</option>
+                {% for community in communities %}
+                    <option value="{{ community.id }}">{{ community.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+    <div id="topic-select" class="hidden">
+        <label>Select topic
+            <select name="topic_id">
+                <option value="">-- choose --</option>
+                {% for topic in topics %}
+                    <option value="{{ topic.id }}">{{ topic.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+    <input type="hidden" name="profile_post" id="profile_post" value="">
+    <button type="submit" class="button">Publish</button>
+</form>
+
+<script>
+function toggleDestination(destination) {
+    document.getElementById('community-select').classList.add('hidden');
+    document.getElementById('topic-select').classList.add('hidden');
+    document.getElementById('profile_post').value = '';
+
+    if (destination === 'community') {
+        document.getElementById('community-select').classList.remove('hidden');
+    } else if (destination === 'topic') {
+        document.getElementById('topic-select').classList.remove('hidden');
+    } else if (destination === 'profile') {
+        document.getElementById('profile_post').value = '1';
+    }
+}
+</script>
+{% endblock %}
